@@ -1,4 +1,4 @@
-import axios from "../utils/axiosInstance";
+import axios from "../../utils/axiosInstance";
 
 
 import { ADD_TO_CART, REMOVE_CART_ITEM } from "../Constants/cartConstants";

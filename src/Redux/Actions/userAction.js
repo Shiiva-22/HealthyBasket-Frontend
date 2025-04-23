@@ -32,7 +32,7 @@ import {
   UPDATE_USER_ROLE_FAIL,
 } from "../Constants/userConstants";
 
-import axios from "../utils/axiosInstance";
+import axios from "../../utils/axiosInstance";
 
 
 

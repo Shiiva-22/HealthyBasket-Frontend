@@ -13,7 +13,7 @@ import {
   UPDATE_CATEGORY_REQUEST,
   UPDATE_CATEGORY_SUCCESS,
 } from "../Constants/categoryConstants";
-import axios from "../utils/axiosInstance";
+import axios from "../../utils/axiosInstance";
 
 
 
