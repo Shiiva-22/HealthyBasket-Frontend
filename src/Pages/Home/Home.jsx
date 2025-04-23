@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import "./Home.css";
 import Header from "../../Components/Header/Header";
 import freshFruits from "../../Assets/Images/freshFruits.png";
@@ -13,18 +13,32 @@ import { Link, useNavigate } from "react-router-dom";
 import Footer from "../../Components/Footer/Footer";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../Components/Loader/Loader";
+import { useEffect } from "react";
 import { getAllCategoryAction } from "../../Redux/Actions/categoryAction";
 import { getAllReviewsAction } from "../../Redux/Actions/reviewsAction";
 import axios from "axios";
+import { useState } from "react";
 
 const Home = () => {
   const dispatch = useDispatch();
   const Navigate = useNavigate();
 
+  //getting user from user
   const { loading: userLoading, user } = useSelector((state) => state.user);
-  const { loading: categoryLoading, Categories } = useSelector((state) => state.getAllCategory);
-  const { reviews, loading: reviewsLoading } = useSelector((state) => state.getAllReviews);
 
+  //getting category from state
+  const { loading: categoryLoading, Categories } = useSelector(
+    (state) => state.getAllCategory
+  );
+
+  //getting all Reviews from state
+  const {
+    reviews,
+    loading: reviewsLoading,
+    error,
+  } = useSelector((state) => state.getAllReviews);
+
+  //Get Recent Products
   const [recentProductLoading, setRecentLoading] = useState(false);
   const [recentProductsError, setRecentProductsError] = useState(false);
   const [recentProductsSuccess, setRecentProductsSuccess] = useState(false);
@@ -34,12 +48,14 @@ const Home = () => {
     try {
       setRecentLoading(true);
       const { data } = await axios.get("/api/product/recent/products");
-      setRecentProducts(data.products || []);
-      setRecentProductsSuccess(true);
-    } catch (error) {
-      setRecentProductsError(true);
-    } finally {
+      setRecentProducts(data.products);
       setRecentLoading(false);
+      setRecentProductsSuccess(true);
+      setRecentLoading(false);
+    } catch (error) {
+      setRecentLoading(false);
+      setRecentProductsError(true);
+      // console.log(error);
     }
   };
 
@@ -54,12 +70,24 @@ const Home = () => {
     slidesPerView: 1,
     spaceBetween: 10,
     loop: true,
-    autoplay: { delay: 5000 },
-    breakpoints: {
-      640: { slidesPerView: 2, spaceBetween: 20 },
-      768: { slidesPerView: 2, spaceBetween: 40 },
-      1024: { slidesPerView: 3, spaceBetween: 50 },
+    autoplay: {
+      delay: 5000,
     },
+    breakpoints: {
+      640: {
+        slidesPerView: 2,
+        spaceBetween: 20,
+      },
+      768: {
+        slidesPerView: 2,
+        spaceBetween: 40,
+      },
+      1024: {
+        slidesPerView: 3,
+        spaceBetween: 50,
+      },
+    },
+    // navigation: true,
     modules: [Autoplay, Navigation],
     className: "mySwiper",
   };
@@ -68,7 +96,10 @@ const Home = () => {
     <>
       <Header />
 
-      {userLoading || categoryLoading || reviewsLoading || recentProductLoading ? (
+      {userLoading ||
+      categoryLoading ||
+      reviewsLoading ||
+      recentProductLoading ? (
         <Loader LoadingName={"Loading Home"} />
       ) : (
         <>
@@ -86,13 +117,15 @@ const Home = () => {
                   of low quality but highly priced.
                 </p>
                 <Link to="/products">
-                  <button className="shopNowBtn">Shop Now</button>
+                  {" "}
+                  <button className="shopNowBtn">Shop Now</button>{" "}
                 </Link>
               </div>
             </section>
           </div>
 
           {/* Our Features */}
+
           <section className="features" id="features">
             <h1 className="Heading">
               Our <span>Features</span>
@@ -113,6 +146,7 @@ const Home = () => {
                 <img src={featureImg2} alt="" />
                 <h3>Free Delivery</h3>
                 <p>
+                  {" "}
                   We Are Doing FREE Shipping All Over India Add Your Favorites
                   Products To Cart And Enjoy Assured Low Price Delivery
                 </p>
@@ -137,24 +171,31 @@ const Home = () => {
             <div className="product-slider">
               <Swiper {...options}>
                 <div className="wrapper">
-                  {Array.isArray(recentProducts) && recentProducts.length > 0 && recentProductsSuccess ? (
-                    recentProducts.map((item) => (
-                      <SwiperSlide key={item._id}>
-                        <div className="box">
-                          <img src={item.url} alt="" />
-                          <h1>{item.name}</h1>
-                          <div className="price">Rate : ₹ {item.rate}</div>
-                          <button
-                            className="shopNowBtn"
-                            onClick={() => Navigate(`/products/${item.name}`)}
-                          >
-                            View Product
-                          </button>
-                        </div>
-                      </SwiperSlide>
-                    ))
+                  {recentProducts.length !== 0 &&
+                  recentProductsSuccess == true ? (
+                    <>
+                      {recentProducts.map((item) => {
+                        return (
+                          <SwiperSlide key={item._id}>
+                            <div className="box">
+                              <img src={item.url} alt="" />
+                              <h1>{item.name}</h1>
+                              <div className="price"> Rate : ₹ {item.rate}</div>
+                              <button
+                                className="shopNowBtn"
+                                onClick={() => {
+                                  Navigate(`/products/${item.name}`);
+                                }}
+                              >
+                               View Product
+                              </button>
+                            </div>
+                          </SwiperSlide>
+                        );
+                      })}
+                    </>
                   ) : (
-                    <p>No recent products found.</p>
+                    ""
                   )}
                 </div>
               </Swiper>
@@ -166,17 +207,22 @@ const Home = () => {
               Product<span>Categories</span>
             </h1>
             <div className="category-box-container">
-              {Array.isArray(Categories) &&
-                Categories.map((category) => (
-                  <div className="box" key={category._id}>
-                    <img src={category.categoryImage} alt="" />
-                    <h1>Fresh {category.categoryName}</h1>
-                    <br />
-                    <Link to={`/products`} className="shopNowBtn">
-                      Shop Now
-                    </Link>
-                  </div>
-                ))}
+              {Categories &&
+                Categories.map((category) => {
+                  return (
+                    <div className="box" key={category._id}>
+                      <img src={category.categoryImage} alt="" />
+                      <h1>Fresh {category.categoryName}</h1>
+                      <br />
+                      <Link
+                        to={`/products`}
+                        className="shopNowBtn"
+                      >
+                        Shop Now
+                      </Link>
+                    </div>
+                  );
+                })}
             </div>
           </section>
 
@@ -187,26 +233,37 @@ const Home = () => {
             <div className="product-slider">
               <Swiper {...options}>
                 <div className="wrapper">
-                  {Array.isArray(reviews) &&
-                    reviews.map((review) => (
-                      <SwiperSlide key={review._id}>
-                        <div className="box reviews-box">
-                          <h1>
-                            {review.user.firstName + " " + review.user.lastName}
-                          </h1>
-                          <div className="price">{review.comment}</div>
-                          <div className="stars">
-                            {[...Array(5)].map((_, i) => (
-                              <i key={i}>{<FaStar />}</i>
-                            ))}
+                  {reviews &&
+                    reviews.map((review) => {
+                      return (
+                        <SwiperSlide key={review._id}>
+                          <div className="box reviews-box">
+                            {/* <img src={pic1} alt="" /> */}
+                            <h1>
+                              {" "}
+                              {review.user.firstName +
+                                " " +
+                                review.user.lastName}
+                            </h1>
+                            <div className="price">{review.comment}</div>
+                            <div className="stars">
+                              <i>{<FaStar />}</i>
+                              <i>{<FaStar />}</i>
+                              <i>{<FaStar />}</i>
+                              <i>{<FaStar />}</i>
+                              <i>{<FaStar />}</i>
+                            </div>
                           </div>
-                        </div>
-                      </SwiperSlide>
-                    ))}
+                        </SwiperSlide>
+                      );
+                    })}
                 </div>
               </Swiper>
             </div>
           </section>
+          <br />
+          <br />
+          <br />
         </>
       )}
 
