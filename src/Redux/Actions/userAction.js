@@ -32,7 +32,8 @@ import {
   UPDATE_USER_ROLE_FAIL,
 } from "../Constants/userConstants";
 
-import axios from "axios";
+import axios from '../../../axiosInstance';
+
 
 export const userRegisterAction = (userData) => async (dispatch) => {
   try {
