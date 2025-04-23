@@ -68,7 +68,8 @@ export const loadUserAction = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: LOAD_LOGIN_USER_FAIL,
-      error: error.response.data.message,
+      error: error?.response?.data?.message || error.message,
+      
     });
   }
 };
@@ -91,7 +92,8 @@ export const userPasswordUpdateAction = (userData) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: USER_PASSWORD_UPDATE_FAIL,
-      error: error.response.data.message,
+      error: error?.response?.data?.message || error.message,
+      
     });
   }
 };
@@ -106,7 +108,8 @@ export const restPasswordSendEmailAction = (email) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: SEND_PASSWORD_REST_EMAIL_FAIL,
-      error: error.response.data.message,
+      error: error?.response?.data?.message || error.message,
+      
     });
   }
 };
@@ -126,7 +129,8 @@ export const restPasswordAction =
     } catch (error) {
       dispatch({
         type: USER_PASSWORD_REST_FAIL,
-        error: error.response.data.message,
+      error: error?.response?.data?.message || error.message,
+        
       });
     }
   };
@@ -139,7 +143,8 @@ export const getAllUsersAdminAction = () => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: GET_ALL_USERS_FAIL,
-      error: error.response.data.message,
+      error: error?.response?.data?.message || error.message,
+      
     });
   }
 };
@@ -165,7 +170,8 @@ export const adminUpdateUserAction = (userId, UserRole) => async (dispatch) => {
     // console.log(error.response.data.message);
     dispatch({
       type: UPDATE_USER_ROLE_FAIL,
-      error: error.response.data.message,
+      error: error?.response?.data?.message || error.message,
+      
     });
   }
 };
