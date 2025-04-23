@@ -15,16 +15,16 @@ import {
 } from "../Constants/categoryConstants";
 import axios from "../../utils/axiosInstance";
 
-
-
 export const addCategoryAction = (categoryData) => async (dispatch) => {
   try {
     dispatch({ type: ADD_CATEGORY_REQUEST });
     const { data } = await axios.post("/api/category/add", categoryData);
     dispatch({ type: ADD_CATEGORY_SUCCESS, payload: data });
   } catch (error) {
-    // console.log(error);
-    dispatch({ type: ADD_CATEGORY_FAIL, error: error.response.data.message });
+    dispatch({
+      type: ADD_CATEGORY_FAIL,
+      error: error?.response?.data?.message || error.message,
+    });
   }
 };
 
@@ -34,12 +34,14 @@ export const getAllCategoryAction = () => async (dispatch) => {
     const { data } = await axios.get("/api/category/get");
     dispatch({ type: GET_CATEGORY_SUCCESS, payload: data });
   } catch (error) {
-    // console.log(error);
-    dispatch({ type: GET_CATEGORY_FAIL, error: error.response.data.message });
+    dispatch({
+      type: GET_CATEGORY_FAIL,
+      error: error?.response?.data?.message || error.message,
+    });
   }
 };
 
-//Delete Category
+// Delete Category
 export const deleteCategoryAction = (categoryId) => async (dispatch) => {
   try {
     dispatch({ type: DELETE_CATEGORY_REQUEST });
@@ -48,12 +50,12 @@ export const deleteCategoryAction = (categoryId) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: DELETE_CATEGORY_FAIL,
-      error: error.response.data.message,
+      error: error?.response?.data?.message || error.message,
     });
   }
 };
 
-//Update Category
+// Update Category
 export const updateCategoryAction =
   (categoryId, updateFormData) => async (dispatch) => {
     try {
@@ -64,10 +66,9 @@ export const updateCategoryAction =
       );
       dispatch({ type: UPDATE_CATEGORY_SUCCESS, payload: data });
     } catch (error) {
-      // console.log(error);
       dispatch({
         type: UPDATE_CATEGORY_FAIL,
-        error: error.response.data.message,
+        error: error?.response?.data?.message || error.message,
       });
     }
   };
