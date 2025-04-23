@@ -16,7 +16,8 @@ import {
   UPDATE_PRODUCT_REQUEST,
   UPDATE_PRODUCT_SUCCESS,
 } from "../Constants/productConstants";
-import axios from "axios";
+import axios from '../../../axiosInstance';
+
 
 //Add Products
 export const AddProductsAction = (formData) => async (dispatch) => {
