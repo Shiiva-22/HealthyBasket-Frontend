@@ -52,7 +52,8 @@ export const getAllProductsAction =
     } catch (error) {
       dispatch({
         type: GET_ALL_PRODUCTS_FAIL,
-        error: error.response.data.message,
+      error: error?.response?.data?.message || error.message,
+        
       });
     }
   };
@@ -77,7 +78,8 @@ export const getSingleProductAction = (productId) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: GET_SINGLE_PRODUCT_FAIL,
-      error: error.response.data.message,
+      error: error?.response?.data?.message || error.message,
+      
     });
   }
 };
@@ -96,7 +98,8 @@ export const updateProductAction =
       // console.log(error);
       dispatch({
         type: UPDATE_PRODUCT_FAIL,
-        error: error.response.data.message,
+      error: error?.response?.data?.message || error.message,
+        
       });
     }
   };
