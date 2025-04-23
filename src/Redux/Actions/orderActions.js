@@ -1,4 +1,5 @@
-import axios from '../../../axiosInstance';
+import axios from "../utils/axiosInstance";
+
 
 import {
   GET_ALL_ORDERS_ADMIN_FAIL,
