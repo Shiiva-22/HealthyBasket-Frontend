@@ -1,4 +1,5 @@
-import axios from "axios";
+import axios from '../../../axiosInstance';
+
 import {
   CLEAR_ERRORS,
   DELETE_REVIEWS_REQUEST,
