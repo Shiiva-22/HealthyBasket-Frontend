@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import "./Home.css";
 import Header from "../../Components/Header/Header";
 import freshFruits from "../../Assets/Images/freshFruits.png";
@@ -6,39 +6,38 @@ import featureImg1 from "../../Assets/Images/feature-img-1.png";
 import featureImg2 from "../../Assets/Images/feature-img-2.png";
 import featureImg3 from "../../Assets/Images/feature-img-3.png";
 import { FaStar } from "react-icons/fa";
-import "../../Assets/js/script";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation } from "swiper";
 import { Link, useNavigate } from "react-router-dom";
 import Footer from "../../Components/Footer/Footer";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../Components/Loader/Loader";
-import { useEffect } from "react";
 import { getAllCategoryAction } from "../../Redux/Actions/categoryAction";
 import { getAllReviewsAction } from "../../Redux/Actions/reviewsAction";
 import axios from "axios";
-import { useState } from "react";
+
+// Removed problematic line:
+// import "../../Assets/js/script";
 
 const Home = () => {
   const dispatch = useDispatch();
   const Navigate = useNavigate();
 
-  //getting user from user
-  const { loading: userLoading, user } = useSelector((state) => state.user);
+  // Redux: Get user state
+  const { loading: userLoading } = useSelector((state) => state.user);
 
-  //getting category from state
+  // Redux: Get categories
   const { loading: categoryLoading, Categories } = useSelector(
     (state) => state.getAllCategory
   );
 
-  //getting all Reviews from state
+  // Redux: Get reviews
   const {
     reviews,
     loading: reviewsLoading,
-    error,
   } = useSelector((state) => state.getAllReviews);
 
-  //Get Recent Products
+  // Local: Recent products
   const [recentProductLoading, setRecentLoading] = useState(false);
   const [recentProductsError, setRecentProductsError] = useState(false);
   const [recentProductsSuccess, setRecentProductsSuccess] = useState(false);
@@ -48,14 +47,12 @@ const Home = () => {
     try {
       setRecentLoading(true);
       const { data } = await axios.get("/api/product/recent/products");
-      setRecentProducts(data.products);
-      setRecentLoading(false);
+      setRecentProducts(data.products || []);
       setRecentProductsSuccess(true);
-      setRecentLoading(false);
     } catch (error) {
-      setRecentLoading(false);
       setRecentProductsError(true);
-      // console.log(error);
+    } finally {
+      setRecentLoading(false);
     }
   };
 
@@ -74,20 +71,10 @@ const Home = () => {
       delay: 5000,
     },
     breakpoints: {
-      640: {
-        slidesPerView: 2,
-        spaceBetween: 20,
-      },
-      768: {
-        slidesPerView: 2,
-        spaceBetween: 40,
-      },
-      1024: {
-        slidesPerView: 3,
-        spaceBetween: 50,
-      },
+      640: { slidesPerView: 2, spaceBetween: 20 },
+      768: { slidesPerView: 2, spaceBetween: 40 },
+      1024: { slidesPerView: 3, spaceBetween: 50 },
     },
-    // navigation: true,
     modules: [Autoplay, Navigation],
     className: "mySwiper",
   };
@@ -96,10 +83,7 @@ const Home = () => {
     <>
       <Header />
 
-      {userLoading ||
-      categoryLoading ||
-      reviewsLoading ||
-      recentProductLoading ? (
+      {userLoading || categoryLoading || reviewsLoading || recentProductLoading ? (
         <Loader LoadingName={"Loading Home"} />
       ) : (
         <>
@@ -117,14 +101,11 @@ const Home = () => {
                   of low quality but highly priced.
                 </p>
                 <Link to="/products">
-                  {" "}
-                  <button className="shopNowBtn">Shop Now</button>{" "}
+                  <button className="shopNowBtn">Shop Now</button>
                 </Link>
               </div>
             </section>
           </div>
-
-          {/* Our Features */}
 
           <section className="features" id="features">
             <h1 className="Heading">
@@ -132,7 +113,7 @@ const Home = () => {
             </h1>
             <div className="box-container">
               <div className="box">
-                <img src={featureImg1} alt="" />
+                <img src={featureImg1} alt="Fresh and Organic" />
                 <h3>Fresh And Organic</h3>
                 <p>
                   Fresh And Organic Delivery We Make Your Life Easy By
@@ -143,17 +124,16 @@ const Home = () => {
               </div>
 
               <div className="box">
-                <img src={featureImg2} alt="" />
+                <img src={featureImg2} alt="Free Delivery" />
                 <h3>Free Delivery</h3>
                 <p>
-                  {" "}
                   We Are Doing FREE Shipping All Over India Add Your Favorites
                   Products To Cart And Enjoy Assured Low Price Delivery
                 </p>
               </div>
 
               <div className="box">
-                <img src={featureImg3} alt="" />
+                <img src={featureImg3} alt="Cash On Delivery" />
                 <h3>Cash On Delivery</h3>
                 <p>
                   We Offer Cash On Delivery...!! <br /> You Can Pay When Your
@@ -163,7 +143,6 @@ const Home = () => {
             </div>
           </section>
 
-          {/* Our Products */}
           <section className="top-products">
             <h1 className="Heading">
               New<span>Products</span>
@@ -171,31 +150,26 @@ const Home = () => {
             <div className="product-slider">
               <Swiper {...options}>
                 <div className="wrapper">
-                  {recentProducts.length !== 0 &&
-                  recentProductsSuccess == true ? (
-                    <>
-                      {recentProducts.map((item) => {
-                        return (
-                          <SwiperSlide key={item._id}>
-                            <div className="box">
-                              <img src={item.url} alt="" />
-                              <h1>{item.name}</h1>
-                              <div className="price"> Rate : ₹ {item.rate}</div>
-                              <button
-                                className="shopNowBtn"
-                                onClick={() => {
-                                  Navigate(`/products/${item.name}`);
-                                }}
-                              >
-                               View Product
-                              </button>
-                            </div>
-                          </SwiperSlide>
-                        );
-                      })}
-                    </>
+                  {Array.isArray(recentProducts) &&
+                  recentProducts.length > 0 &&
+                  recentProductsSuccess ? (
+                    recentProducts.map((item) => (
+                      <SwiperSlide key={item._id}>
+                        <div className="box">
+                          <img src={item.url} alt={item.name} />
+                          <h1>{item.name}</h1>
+                          <div className="price">Rate : ₹ {item.rate}</div>
+                          <button
+                            className="shopNowBtn"
+                            onClick={() => Navigate(`/products/${item.name}`)}
+                          >
+                            View Product
+                          </button>
+                        </div>
+                      </SwiperSlide>
+                    ))
                   ) : (
-                    ""
+                    <p>No recent products found.</p>
                   )}
                 </div>
               </Swiper>
@@ -207,22 +181,17 @@ const Home = () => {
               Product<span>Categories</span>
             </h1>
             <div className="category-box-container">
-              {Categories &&
-                Categories.map((category) => {
-                  return (
-                    <div className="box" key={category._id}>
-                      <img src={category.categoryImage} alt="" />
-                      <h1>Fresh {category.categoryName}</h1>
-                      <br />
-                      <Link
-                        to={`/products`}
-                        className="shopNowBtn"
-                      >
-                        Shop Now
-                      </Link>
-                    </div>
-                  );
-                })}
+              {Array.isArray(Categories) &&
+                Categories.map((category) => (
+                  <div className="box" key={category._id}>
+                    <img src={category.categoryImage} alt={category.categoryName} />
+                    <h1>Fresh {category.categoryName}</h1>
+                    <br />
+                    <Link to={`/products`} className="shopNowBtn">
+                      Shop Now
+                    </Link>
+                  </div>
+                ))}
             </div>
           </section>
 
@@ -233,34 +202,29 @@ const Home = () => {
             <div className="product-slider">
               <Swiper {...options}>
                 <div className="wrapper">
-                  {reviews &&
-                    reviews.map((review) => {
-                      return (
-                        <SwiperSlide key={review._id}>
-                          <div className="box reviews-box">
-                            {/* <img src={pic1} alt="" /> */}
-                            <h1>
-                              {" "}
-                              {review.user.firstName +
-                                " " +
-                                review.user.lastName}
-                            </h1>
-                            <div className="price">{review.comment}</div>
-                            <div className="stars">
-                              <i>{<FaStar />}</i>
-                              <i>{<FaStar />}</i>
-                              <i>{<FaStar />}</i>
-                              <i>{<FaStar />}</i>
-                              <i>{<FaStar />}</i>
-                            </div>
+                  {Array.isArray(reviews) &&
+                    reviews.map((review) => (
+                      <SwiperSlide key={review._id}>
+                        <div className="box reviews-box">
+                          <h1>
+                            {review.user.firstName + " " + review.user.lastName}
+                          </h1>
+                          <div className="price">{review.comment}</div>
+                          <div className="stars">
+                            {[...Array(5)].map((_, i) => (
+                              <i key={i}>
+                                <FaStar />
+                              </i>
+                            ))}
                           </div>
-                        </SwiperSlide>
-                      );
-                    })}
+                        </div>
+                      </SwiperSlide>
+                    ))}
                 </div>
               </Swiper>
             </div>
           </section>
+
           <br />
           <br />
           <br />
