@@ -13,7 +13,8 @@ import {
   UPDATE_CATEGORY_REQUEST,
   UPDATE_CATEGORY_SUCCESS,
 } from "../Constants/categoryConstants";
-import axios from '../../../axiosInstance';
+import axios from "../utils/axiosInstance";
+
 
 
 export const addCategoryAction = (categoryData) => async (dispatch) => {
