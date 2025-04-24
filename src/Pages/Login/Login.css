@@ -2,6 +2,7 @@
   margin-bottom: 12rem;
   height: 100%;
 }
+
 .regHeading {
   padding-top: 14rem;
   padding-bottom: 5rem;
@@ -10,7 +11,6 @@
 .login-container .box {
   width: 100%;
   margin: auto;
-  /* border: 2px solid red; */
 }
 
 .login-box {
@@ -19,39 +19,53 @@
   padding: 5rem;
   text-align: center;
   margin: auto;
-  box-shadow: rgba(77, 187, 101, 0.795) 0px 1px 0px;
+  border-radius: 1rem;
+  box-shadow: rgba(102, 187, 106, 0.3) 0px 8px 16px;
 }
+
 .login-box form svg {
   position: absolute;
   font-size: 2.5rem;
   margin-top: 1.5rem;
   margin-left: 1rem;
-  color: wheat;
+  color: #66bb6a;
 }
 
 .showPassword {
   position: absolute;
   margin-left: -4.5rem;
+  color: #388e3c;
+  cursor: pointer;
 }
 
 .box form input {
-  background: var(--black) !important;
+  background-color: #e8f5e9 !important;
   margin-bottom: 2.2rem;
   font-size: 2rem;
   padding: 1.2rem;
   width: 70%;
   padding-left: 5rem;
   padding-right: 5rem;
-  color: white;
+  color: #1b5e20;
+  border: 2px solid #a5d6a7;
+  border-radius: 0.5rem;
+  transition: border-color 0.3s ease;
+}
+
+.box form input:focus {
+  border-color: #66bb6a;
+  outline: none;
+  background-color: #f1f8e9;
 }
 
 .validError {
-  background-color: brown;
+  background-color: #d32f2f;
   width: 70%;
   margin: auto;
   padding: 1rem;
   margin-bottom: 2rem;
   transition: all;
+  border-radius: 0.4rem;
 }
 
 .validError span {
@@ -59,28 +73,41 @@
   padding: inherit;
   color: white;
 }
+
 .user-links {
   display: flex;
   justify-content: space-evenly;
 }
+
 .user-links a {
   font-size: 1.5rem;
-  color: var(--light-color);
+  color: #43a047;
+  text-decoration: none;
 }
+
+.user-links a:hover {
+  text-decoration: underline;
+}
+
 .login-box button {
-  background-color: green;
+  background-color: #43a047;
   padding: 0.5rem 3rem;
   font-size: 2.3rem;
   color: white;
-  border-radius: 0.3rem;
-  margin-top: 2.5rem;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
+
 .login-box button:hover {
-  background-color: red;
+  background-color: #2e7d32;
 }
+
 .RegisterSuccess {
   margin-bottom: 2rem;
 }
+
 .RegisterSuccess .pop-card {
   background-color: white;
   width: 40rem;
@@ -92,14 +119,17 @@
   border-radius: 0.5rem;
   box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 0px;
 }
+
 .loader {
   display: block !important;
 }
+
 .loader-pop-cart {
   padding: 5rem !important;
   border-radius: 0.5rem;
   box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 0px;
 }
+
 .RegisterSuccess div h1 {
   color: var(--black);
   font-size: 2.2rem;
@@ -107,7 +137,6 @@
 }
 
 .RegisterSuccess div button {
-  color: var(--black);
   padding: 1rem;
   font-size: 1.8rem;
   background-color: var(--green);
@@ -119,6 +148,7 @@
   margin: auto;
   margin-top: 2rem;
 }
+
 .RegisterSuccess div button:hover {
   background-color: tomato;
 }
@@ -165,10 +195,7 @@
   animation: spin 7s infinite;
   transition: all 2s;
 }
-.forget-password-container {
-  margin-top: 12rem;
-  margin-bottom: 6rem;
-}
+
 @keyframes spin {
   30% {
     content: "🥕";
@@ -202,24 +229,34 @@
   }
 }
 
+.forget-password-container {
+  margin-top: 12rem;
+  margin-bottom: 6rem;
+}
+
 @media (max-width: 450px) {
   .login-container .box {
     width: 100%;
     margin: auto;
   }
+
   .login-box {
     width: 98%;
   }
+
   .box form input {
     width: 100%;
   }
+
   .user-links {
     display: flex;
     justify-content: space-between;
   }
+
   .validError {
     width: 100%;
   }
+
   .RegisterSuccess div h1 {
     color: var(--black);
     font-size: 2.5rem;
