@@ -1,11 +1,22 @@
+:root {
+  --green: #4dbb65;
+  --light-green: #e6f9ea;
+  --dark-green: #2e7d32;
+  --black: #1b1b1b;
+  --light-color: #555;
+}
+
 .login-container {
   margin-bottom: 12rem;
   height: 100%;
+  background-color: var(--light-green);
 }
 
 .regHeading {
   padding-top: 14rem;
   padding-bottom: 5rem;
+  text-align: center;
+  color: var(--green);
 }
 
 .login-container .box {
@@ -20,7 +31,7 @@
   text-align: center;
   margin: auto;
   border-radius: 1rem;
-  box-shadow: rgba(102, 187, 106, 0.3) 0px 8px 16px;
+  box-shadow: 0 0 10px rgba(77, 187, 101, 0.2);
 }
 
 .login-box form svg {
@@ -28,60 +39,59 @@
   font-size: 2.5rem;
   margin-top: 1.5rem;
   margin-left: 1rem;
-  color: #66bb6a;
+  color: var(--green);
 }
 
 .showPassword {
   position: absolute;
   margin-left: -4.5rem;
-  color: #388e3c;
+  margin-top: 1.5rem;
+  font-size: 2rem;
   cursor: pointer;
+  color: var(--green);
 }
 
 .box form input {
-  background-color: #e8f5e9 !important;
+  background: var(--light-green);
   margin-bottom: 2.2rem;
   font-size: 2rem;
   padding: 1.2rem;
   width: 70%;
   padding-left: 5rem;
   padding-right: 5rem;
-  color: #1b5e20;
-  border: 2px solid #a5d6a7;
+  border: 1px solid var(--green);
   border-radius: 0.5rem;
-  transition: border-color 0.3s ease;
+  color: var(--black);
+  outline: none;
 }
 
-.box form input:focus {
-  border-color: #66bb6a;
-  outline: none;
-  background-color: #f1f8e9;
+.box form input::placeholder {
+  color: #777;
 }
 
 .validError {
-  background-color: #d32f2f;
+  background-color: brown;
   width: 70%;
   margin: auto;
   padding: 1rem;
   margin-bottom: 2rem;
-  transition: all;
-  border-radius: 0.4rem;
+  border-radius: 0.5rem;
 }
 
 .validError span {
   font-size: 1.7rem;
-  padding: inherit;
   color: white;
 }
 
 .user-links {
   display: flex;
   justify-content: space-evenly;
+  margin-top: 1rem;
 }
 
 .user-links a {
   font-size: 1.5rem;
-  color: #43a047;
+  color: var(--green);
   text-decoration: none;
 }
 
@@ -90,18 +100,19 @@
 }
 
 .login-box button {
-  background-color: #43a047;
-  padding: 0.5rem 3rem;
-  font-size: 2.3rem;
+  background-color: var(--green);
+  padding: 0.8rem 3rem;
+  font-size: 2rem;
   color: white;
-  border-radius: 0.5rem;
   border: none;
+  border-radius: 0.5rem;
+  margin-top: 2rem;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s;
 }
 
 .login-box button:hover {
-  background-color: #2e7d32;
+  background-color: var(--dark-green);
 }
 
 .RegisterSuccess {
@@ -111,10 +122,8 @@
 .RegisterSuccess .pop-card {
   background-color: white;
   width: 40rem;
-  padding: 0.5rem 0.2rem;
+  padding: 2rem;
   text-align: center;
-  height: fit-content;
-  padding-bottom: 2rem;
   margin: auto;
   border-radius: 0.5rem;
   box-shadow: rgba(17, 17, 26, 0.1) 0px 1px 0px;
@@ -137,10 +146,10 @@
 }
 
 .RegisterSuccess div button {
-  padding: 1rem;
-  font-size: 1.8rem;
   background-color: var(--green);
   color: white;
+  padding: 1rem;
+  font-size: 1.8rem;
   border-radius: 0.5rem;
   cursor: pointer;
   display: flex;
@@ -166,6 +175,7 @@
   border-radius: 0.5rem;
   display: flex;
   align-items: center;
+  color: white;
 }
 
 .successLoader {
@@ -173,13 +183,12 @@
   width: 6rem;
   padding: 0.8rem 1.7rem;
   margin: auto;
-  border: 1px solid green;
+  border: 1px solid var(--green);
   border-radius: 100%;
   display: flex;
   justify-content: center;
   place-items: center;
   animation: loader 7s infinite;
-  transition: all 2s;
 }
 
 @keyframes loader {
@@ -193,72 +202,36 @@
   content: "🥦";
   font-size: 2.8rem;
   animation: spin 7s infinite;
-  transition: all 2s;
 }
 
 @keyframes spin {
-  30% {
-    content: "🥕";
-  }
-  35% {
-    content: "🍊";
-  }
-  40% {
-    content: "🌶️";
-  }
-  45% {
-    content: "🍍";
-  }
-  50% {
-    content: "🍏";
-  }
-  55% {
-    content: "🍐";
-  }
-  60% {
-    content: "🍉";
-  }
-  65% {
-    content: "🍓";
-  }
-  70% {
-    content: "🍒";
-  }
-  75% {
-    content: "🍎";
-  }
-}
-
-.forget-password-container {
-  margin-top: 12rem;
-  margin-bottom: 6rem;
+  30% { content: "🥕"; }
+  35% { content: "🍊"; }
+  40% { content: "🌶️"; }
+  45% { content: "🍍"; }
+  50% { content: "🍏"; }
+  55% { content: "🍐"; }
+  60% { content: "🍉"; }
+  65% { content: "🍓"; }
+  70% { content: "🍒"; }
+  75% { content: "🍎"; }
 }
 
 @media (max-width: 450px) {
   .login-container .box {
     width: 100%;
-    margin: auto;
   }
-
   .login-box {
-    width: 98%;
+    width: 95%;
+    padding: 2rem;
   }
-
   .box form input {
     width: 100%;
   }
-
-  .user-links {
-    display: flex;
-    justify-content: space-between;
-  }
-
   .validError {
     width: 100%;
   }
-
   .RegisterSuccess div h1 {
-    color: var(--black);
     font-size: 2.5rem;
   }
 }
