@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useEffect } from "react";
 import "./Login.css";
 import { Link, useNavigate } from "react-router-dom";
 import Footer from "../../Components/Footer/Footer";
@@ -8,30 +8,35 @@ import { VscEye, VscEyeClosed } from "react-icons/vsc";
 import { userLoginAction, clearError } from "../../Redux/Actions/userAction";
 import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../Components/Loader/Loader";
-import { useEffect } from "react";
 
 const Login = () => {
   const dispatch = useDispatch();
   const Navigate = useNavigate();
 
+  const emailRef = useRef();
+  const passwordRef = useRef();
   const passwordToggle = useRef();
+
   const { error, success, loading } = useSelector((state) => state.user);
 
   const TogglePass = () => {
     const filedType = passwordToggle.current.type;
-    passwordToggle.current.type =
-      filedType === "password" ? "text" : "password";
+    passwordToggle.current.type = filedType === "password" ? "text" : "password";
   };
+
   const handelLoginSubmit = (e) => {
     e.preventDefault();
 
-    const email = document.login_form.email.value;
-    const password = document.login_form.password.value;
-    const userData = {
-      email,
-      password,
-    };
+    const email = emailRef.current.value;
+    const password = passwordRef.current.value;
+
+    const userData = { email, password };
+
     dispatch(userLoginAction(userData));
+
+    // Clear inputs after submission
+    emailRef.current.value = "";
+    passwordRef.current.value = "";
   };
 
   useEffect(() => {
@@ -56,12 +61,7 @@ const Login = () => {
           </h1>
           <div className="box">
             <div className="login-box">
-              <form
-                name="login_form"
-                onSubmit={(e) => {
-                  handelLoginSubmit(e);
-                }}
-              >
+              <form name="login_form" onSubmit={handelLoginSubmit}>
                 <div className="user-email">
                   <MdOutlineMarkEmailRead />
                   <input
@@ -69,6 +69,7 @@ const Login = () => {
                     placeholder="Email"
                     required
                     name="email"
+                    ref={emailRef}
                   />
                 </div>
                 <div className="user-password">
@@ -77,7 +78,7 @@ const Login = () => {
                     type="password"
                     placeholder="Password"
                     required
-                    ref={passwordToggle}
+                    ref={passwordRef}
                     name="password"
                   />
                   <i className="showPassword" onClick={TogglePass}>
@@ -85,13 +86,10 @@ const Login = () => {
                   </i>
                 </div>
 
-                {error ? (
+                {error && (
                   <div className="validError">
-                    {" "}
-                    <span>{error}</span>{" "}
+                    <span>{error}</span>
                   </div>
-                ) : (
-                  ""
                 )}
 
                 <div className="user-links">
