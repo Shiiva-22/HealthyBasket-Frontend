@@ -14,7 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Loader from "../../Components/Loader/Loader";
 import { getAllCategoryAction } from "../../Redux/Actions/categoryAction";
 import { getAllReviewsAction } from "../../Redux/Actions/reviewsAction";
-import axios from "axios";
+import axios from "../../utils/axiosInstance";
 
 // Removed problematic line:
 // import "../../Assets/js/script";
