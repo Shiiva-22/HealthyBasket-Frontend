@@ -14,7 +14,7 @@ import {
   UPDATE_ORDER_ADMIN_FAIL,
 } from "../Constants/orderConstants";
 
-//Get Order Reducer
+// Get User Orders Reducer
 export const getUserOrderReducer = (state = { orders: [] }, action) => {
   switch (action.type) {
     case GET_USER_ORDERS_REQUEST:
@@ -28,7 +28,7 @@ export const getUserOrderReducer = (state = { orders: [] }, action) => {
     case GET_USER_ORDERS_FAIL:
       return {
         loading: false,
-        error: action.error,
+        error: action.payload || "Failed to load user orders", // Fixed here
       };
     case CLEAR_ERRORS:
       return {
@@ -40,7 +40,7 @@ export const getUserOrderReducer = (state = { orders: [] }, action) => {
   }
 };
 
-//Get OrderDetails Reducer
+// Get Order Details Reducer
 export const getUserOrderDetailsReducer = (state = { order: {} }, action) => {
   switch (action.type) {
     case GET_USER_ORDERS_DETAILS_REQUEST:
@@ -54,7 +54,7 @@ export const getUserOrderDetailsReducer = (state = { order: {} }, action) => {
     case GET_USER_ORDERS_DETAILS_FAIL:
       return {
         loading: false,
-        error: action.error,
+        error: action.payload || "Failed to load order details", // Fixed here
       };
     case CLEAR_ERRORS:
       return {
@@ -66,7 +66,7 @@ export const getUserOrderDetailsReducer = (state = { order: {} }, action) => {
   }
 };
 
-//get all orders for admin
+// Get All Orders for Admin Reducer
 export const getAllOrdersAdminReducer = (state = { orders: [] }, action) => {
   switch (action.type) {
     case GET_ALL_ORDERS_ADMIN_REQUEST:
@@ -84,7 +84,8 @@ export const getAllOrdersAdminReducer = (state = { orders: [] }, action) => {
       return {
         ...state,
         loading: false,
-        error: action.payload.error,
+        error:
+          action.payload?.error || action.payload || "Failed to load orders", // Updated here
       };
     case CLEAR_ERRORS:
       return {
@@ -96,7 +97,7 @@ export const getAllOrdersAdminReducer = (state = { orders: [] }, action) => {
   }
 };
 
-//update orders for admin
+// Update Orders for Admin Reducer
 export const getUpdateOrderAdminReducer = (state = { order: [] }, action) => {
   switch (action.type) {
     case UPDATE_ORDER_ADMIN_REQUEST:
@@ -113,7 +114,8 @@ export const getUpdateOrderAdminReducer = (state = { order: [] }, action) => {
       return {
         ...state,
         loading: false,
-        error: action.payload.error,
+        error:
+          action.payload?.error || action.payload || "Failed to update order", // Updated here
       };
     case CLEAR_ERRORS:
       return {
