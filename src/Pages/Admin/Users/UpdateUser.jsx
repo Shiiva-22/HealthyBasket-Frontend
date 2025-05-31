@@ -1,43 +1,47 @@
-import React from "react";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import Header from "../../../Components/Header/Header";
+import Sidebar from "../Components/Sidebar/Sidebar";
 import {
   adminUpdateUserAction,
   clearError,
 } from "../../../Redux/Actions/userAction";
-import Sidebar from "../Components/Sidebar/Sidebar";
 
 const UpdateUser = () => {
   const dispatch = useDispatch();
-  const Location = useLocation();
-  const { success, loading, updatedUser, message, error } = useSelector(
+  const location = useLocation();
+
+  const {
+    userName = "",
+    userEmail = "",
+    userRole = "",
+    userId = "",
+  } = location.state || {};
+
+  const [selectedRole, setSelectedRole] = useState("");
+
+  const { success, loading, message, error } = useSelector(
     (state) => state.adminUpdateUser
   );
 
-  const [userRole, setUserRole] = useState(
-    Location.state.userName ? Location.state.userName : ""
-  );
-
-  const [userId, setUserId] = useState(
-    Location.state.userId ? Location.state.userId : ""
-  );
-
-  const handelUpdateUserSubmit = (e) => {
+  const handleUpdateUserSubmit = (e) => {
     e.preventDefault();
-    if (userRole === "") {
+    if (selectedRole === "") {
       alert("Choose Role");
     } else {
-      dispatch(adminUpdateUserAction(userId, userRole));
+      dispatch(adminUpdateUserAction(userId, selectedRole));
     }
   };
 
-  if (error) {
-    setInterval(() => {
-      dispatch(clearError());
-    }, 5000);
-  }
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => {
+        dispatch(clearError());
+      }, 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [error, dispatch]);
 
   return (
     <>
@@ -49,38 +53,23 @@ const UpdateUser = () => {
         </div>
 
         <div className="add-product-form-box">
-          <form onSubmit={(e) => handelUpdateUserSubmit(e)}>
+          <form onSubmit={handleUpdateUserSubmit}>
             <div className="product-name">
-              <input
-                type="text"
-                value={Location.state.userName ? Location.state.userName : ""}
-                placeholder="User Name"
-                readOnly
-              />
+              <input type="text" value={userName} placeholder="User Name" readOnly />
             </div>
 
             <div className="product-name">
-              <input
-                type="text"
-                value={Location.state.userEmail ? Location.state.userEmail : ""}
-                placeholder="User email"
-                readOnly
-              />
+              <input type="text" value={userEmail} placeholder="User Email" readOnly />
             </div>
 
             <div className="product-name">
-              <input
-                type="text"
-                value={Location.state.userRole ? Location.state.userRole : ""}
-                placeholder="User role"
-                readOnly
-              />
+              <input type="text" value={userRole} placeholder="User Role" readOnly />
             </div>
+
             <div className="product-category">
               <select
-                onChange={(e) => {
-                  setUserRole(e.target.value);
-                }}
+                value={selectedRole}
+                onChange={(e) => setSelectedRole(e.target.value)}
                 required
               >
                 <option value="">Choose Role</option>
@@ -89,24 +78,22 @@ const UpdateUser = () => {
               </select>
             </div>
 
-            {error ? (
+            {error && (
               <div className="upload-error">
                 <h1>{error}</h1>
               </div>
-            ) : (
-              ""
             )}
 
-            {success ? (
+            {success && (
               <div className="upload-error">
                 <h1>{message}</h1>
               </div>
-            ) : (
-              ""
             )}
 
             <div className="add-product-form-btn">
-              <button>Update Role</button>
+              <button disabled={loading}>
+                {loading ? "Updating..." : "Update Role"}
+              </button>
             </div>
           </form>
         </div>
